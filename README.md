@@ -20,6 +20,9 @@ _"I HAVE TO TURN MY GAME DOWN TO LIKE 10 BECUASE I CANT FUCKING HEAR MY TAPPING 
 # manual install
 > [!note]
 > please use python 3.8 to 3.12 as DearPyGui 1.10.1 is not compatible with 3.13 and onwards
+
+> [!caution]
+> [there is a MacOS Sequoia bug](https://discussions.apple.com/thread/255761734?sortBy=rank)
 ```bash
 git clone https://github.com/cpuQ/kisu
 ```
