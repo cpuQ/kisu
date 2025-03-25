@@ -15,7 +15,7 @@ if you are on windows you can get the zip for the [latest release](https://githu
 
 # manual install
 > [!note]
-> please use any python version between 3.8 and 3.12 as DearPyGui 1.10.1 is not compatible with 3.13 and onwards
+> please use python 3.8 to 3.12 as DearPyGui 1.10.1 is not compatible with 3.13 and onwards
 ```bash
 git clone https://github.com/cpuQ/kisu
 ```
