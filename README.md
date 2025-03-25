@@ -34,6 +34,5 @@ python main.py
 nuitka --onefile --windows-console-mode=disable --windows-icon-from-ico=res/kisu_large.ico main.py
 ```
 
----
 > [!note]
 > i own all rights to the icon and fonts!
