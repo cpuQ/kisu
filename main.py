@@ -1,8 +1,10 @@
 import dearpygui.dearpygui as dpg
 import sys
 from concurrent.futures import ThreadPoolExecutor
-from scripts.gui import setup_gui
+from scripts.gui import KisuGUI
 from scripts.config import Config
+#from scripts.audio import AudioManager
+from scripts.listen import InputListener
 
 def main(): 
     dpg.create_context()
@@ -14,19 +16,20 @@ def main():
 
         # audio thing
         #audio = AudioManager(config, executor)
+        audio = 'a'
 
         # start keyboard/mouse listenre
-        #listener = InputListener(config, audio, executor)
-        #listener.start()
+        listener = InputListener(config, executor)
 
         # make gui
-        setup_gui(config, 'aa')
+        gui = KisuGUI(config, audio, listener)
+        gui.setup_gui()
         dpg.create_viewport(
             title=f'{config.title} v{config.version}',
             min_width=240,
-            min_height=130,
+            min_height=136,
             width=240,
-            height=130,
+            height=136,
             resizable=True,
             small_icon=config.small_ico,
             large_icon=config.large_ico,
@@ -40,11 +43,11 @@ def main():
             import pywinstyles
             pywinstyles.change_header_color(None, '#2a2a2d')
             pywinstyles.change_border_color(None, "#2a2a2d")
+            pywinstyles.change_title_color(None, '#c0c3c7')
 
         dpg.start_dearpygui()
 
     dpg.destroy_context()
-    #listener.stop()
     sys.exit(0)
 
 if __name__ == '__main__':
