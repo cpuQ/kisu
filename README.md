@@ -1,6 +1,10 @@
-if you are on windows you can get the zip for the [latest release](https://github.com/cpuQ/kisu/releases/latest)
+### what is this
+kisu is a small cross-platform python app that plays a sound when you press/release a key
 
 ![kisu](https://github.com/user-attachments/assets/590d87f5-0d61-4021-8ee0-9a0cbc78f9b3)
+
+### why?
+_"I HAVE TO TURN MY GAME DOWN TO LIKE 10 BECUASE I CANT FUCKING HEAR MY TAPPING I BECOME SHIT WHEN I CANT HEAR MY TAPPING" - Aspect X_
 
 ---
 ### how to use
