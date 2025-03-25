@@ -1,13 +1,17 @@
-if you are on windows you download the compiled release from [releases tab](https://github.com/cpuQ/kisu/releases)
+if you are on windows you can get the zip for the [latest release](https://github.com/cpuQ/kisu/releases/latest)
+
+![kisu](https://github.com/user-attachments/assets/590d87f5-0d61-4021-8ee0-9a0cbc78f9b3)
 
 ---
 ### how to use
 1. run **kisu**
-2. open kisu directory
-3. add audio files to **sounds/button1/press** for button 1 **press** sounds
-4. add audio files to **sounds/button1/release** for button 1 **release** sounds
-5. add audio files to **sounds/button2/press** for button 2 **press** sounds
-6. add audio files to **sounds/button2/release** for button 2 **release** sounds
+2. open kisu sounds directory (theres a button)
+- add audio files to **button1/press** for button 1 **press** sounds
+- add audio files to **button1/release** for button 1 **release** sounds
+- add audio files to **button2/press** for button 2 **press** sounds
+- add audio files to **button2/release** for button 2 **release** sounds
+- _empty folders will default to a silent audio file_
+3. press 'start' button :3
 
 # manual install
 > [!note]
@@ -29,3 +33,7 @@ python main.py
 ```bash
 nuitka --onefile --windows-console-mode=disable --windows-icon-from-ico=res/kisu_large.ico main.py
 ```
+
+---
+> [!note]
+> i own all rights to the icon and fonts!
