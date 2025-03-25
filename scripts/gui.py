@@ -1,4 +1,6 @@
 import dearpygui.dearpygui as dpg
+import os
+import subprocess
 
 def setup_gui(config, audio):
 
@@ -6,6 +8,17 @@ def setup_gui(config, audio):
 
     def always_on_top_callback():
         dpg.set_viewport_always_top(dpg.get_value('always_on_top'))
+
+    def open_directory():
+        path = config.script_dir
+        if config.platform.startswith('win'):
+            os.startfile(path)
+        elif config.platform.startswith('darwin'):
+            subprocess.run(['open', path])
+        elif config.platform.startswith('linux'):
+            subprocess.run(['xdg-open', path])
+        else:
+            raise OSError('unsupported operating system')
 
     main_bg_primary = (42, 42, 45)
     main_bg_secondary = (48, 48, 52)
@@ -99,8 +112,13 @@ def setup_gui(config, audio):
                     dpg.add_text('<3', color=main_hover_col)
 
             with dpg.group():
-                dpg.add_button(label='<- reload', tag='a', width=92, height=20)
-                with dpg.tooltip(dpg.last_item()):
-                    dpg.add_text('rescan sounds in folder', wrap=200)
+                with dpg.group(horizontal=True, horizontal_spacing=8):
+                    dpg.add_button(label='<- reload', tag='reload_sounds', width=64, height=20)
+                    with dpg.tooltip(dpg.last_item()):
+                        dpg.add_text('rescan for changes in sounds', wrap=200)
+                    dpg.add_button(label='o', tag='open_directory', width=20, height=20, callback=open_directory)
+                    with dpg.tooltip(dpg.last_item()):
+                        dpg.add_text('open kisu directory', wrap=200)
+
                 dpg.add_spacer(height=0.9)
                 dpg.add_button(label='start', tag='run_button', width=92, height=47)

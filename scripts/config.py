@@ -2,6 +2,14 @@ import os
 import sys
 import configparser
 
+# platform thing
+def get_platform():
+    platform = sys.platform
+    if platform.startswith(('win', 'darwin', 'linux')):
+        return platform
+    else:
+        raise OSError('unsupported operating system')
+
 # handles paths properly when compiled or running from source
 def script_dir():
     if getattr(sys, 'frozen', False):
@@ -11,6 +19,7 @@ def script_dir():
         # for running as script
         return os.path.dirname(os.path.abspath(sys.argv[0]))
 
+# check config file
 def config_check(file_path):
     config = configparser.ConfigParser()
 
@@ -46,6 +55,9 @@ class Config:
         # status things
         self.button1_status = None
         self.button2_status = None
+
+        # platform specific
+        self.platform = get_platform()
 
         # script directory
         self.script_dir = script_dir()

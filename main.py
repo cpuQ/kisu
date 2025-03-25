@@ -36,7 +36,7 @@ def main():
         dpg.show_viewport()
         dpg.set_primary_window(config.title, True)
 
-        if sys.platform == 'win32':
+        if config.platform.startswith('win'):
             import pywinstyles
             pywinstyles.change_header_color(None, '#2a2a2d')
             pywinstyles.change_border_color(None, "#2a2a2d")
