@@ -170,7 +170,7 @@ class KisuGUI:
                         dpg.add_button(label='<>', tag='reload_button', width=26, height=20, 
                             callback=lambda: self.reload_button())
                         with dpg.tooltip(dpg.last_item()):
-                            dpg.add_text('rescan audio devices and sounds', wrap=200)
+                            dpg.add_text('refresh audio devices and sounds', wrap=200)
                         dpg.add_button(label='/>', tag='open_directory_button', width=26, height=20, 
                             callback=lambda: self.open_directory_button())
                         with dpg.tooltip(dpg.last_item()):
