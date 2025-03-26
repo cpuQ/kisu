@@ -46,11 +46,11 @@ def config_check(file_path):
 
 class Config:
 
-    def __init__(self, title='kisu', version='0.1'):
+    def __init__(self):
 
         # title
-        self.title = title
-        self.version = version
+        self.title = 'kisu'
+        self.version = '0.2'
 
         # platform specific
         self.platform = get_platform()
