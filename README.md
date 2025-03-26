@@ -8,14 +8,16 @@ _"I HAVE TO TURN MY GAME DOWN TO LIKE 10 BECUASE I CANT FUCKING HEAR MY TAPPING 
 
 ---
 ### how to use
-1. run **kisu** ([download](https://github.com/cpuQ/kisu/releases/latest))
-2. open kisu sounds directory (theres a button)
+0. [download](https://github.com/cpuQ/kisu/releases/latest) and extract **kisu**
+1. run it
+2. open kisu sounds directory (theres also a button)
 - add audio files to **button1/press** for button 1 **press** sounds
 - add audio files to **button1/release** for button 1 **release** sounds
 - add audio files to **button2/press** for button 2 **press** sounds
 - add audio files to **button2/release** for button 2 **release** sounds
 - _you can put as many audio files as you want... or none!_
-3. press 'start' button :3
+3. select audio output
+4. press start button :3
 
 # manual install
 > [!note]
