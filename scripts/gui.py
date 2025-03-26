@@ -1,6 +1,7 @@
 import dearpygui.dearpygui as dpg
 import os
 import subprocess
+import time
 
 # fuck the ugly nesting idc the gui looks clean af
 class KisuGUI:
@@ -111,11 +112,13 @@ class KisuGUI:
             with dpg.group(horizontal=True):
                 with dpg.group():
                     with dpg.group(horizontal=True):
-                        dpg.add_button(label=self.config.button1, width=50, height=20, tag='button1', callback=self.hotkey_button, user_data='button1')
+                        dpg.add_button(label=self.config.button1, width=50, height=20, tag='button1', 
+                                      callback=lambda s, a, u: self.hotkey_button(u), user_data='button1')
                         dpg.bind_item_theme('button1', '_button_theme')
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('change button1', tag='button1_tooltip', wrap=200)
-                        dpg.add_button(label=self.config.button2, width=50, height=20, tag='button2', callback=self.hotkey_button, user_data='button2')
+                        dpg.add_button(label=self.config.button2, width=50, height=20, tag='button2', 
+                                      callback=lambda s, a, u: self.hotkey_button(u), user_data='button2')
                         dpg.bind_item_theme('button2', '_button_theme')
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('change button2', tag='button2_tooltip', wrap=200)
@@ -148,7 +151,8 @@ class KisuGUI:
                             dpg.add_text('delay (ms)', wrap=200)
 
                     with dpg.group(horizontal=True, horizontal_spacing=5):
-                        dpg.add_checkbox(tag='always_on_top', default_value=True, callback=self.always_on_top)
+                        dpg.add_checkbox(tag='always_on_top', default_value=True, 
+                                        callback=lambda s, a: self.always_on_top())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('keep this window on top')
                         dpg.add_text('made by cpuQ', color=self.main_font_col_disabled)
@@ -156,18 +160,22 @@ class KisuGUI:
 
                 with dpg.group():
                     with dpg.group(horizontal=True, horizontal_spacing=8):
-                        dpg.add_button(label=self.config.device, width=26, height=20, tag='output_device_button', callback=self.output_device_button)
+                        dpg.add_button(label=self.config.device, width=26, height=20, tag='output_device_button', 
+                                      callback=lambda s, a: self.output_device_button())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text(self.available_devices[self.config.device], wrap=220, tag='output_device_button_tooltip')
-                        dpg.add_button(label='/>', tag='reload_button', width=26, height=20, callback=self.reload_button)
+                        dpg.add_button(label='/>', tag='reload_button', width=26, height=20, 
+                                      callback=lambda s, a: self.reload_button())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('rescan audio devices and sounds', wrap=200)
-                        dpg.add_button(label='...', tag='open_directory_button', width=26, height=20, callback=self.open_directory_button)
+                        dpg.add_button(label='...', tag='open_directory_button', width=26, height=20, 
+                                      callback=lambda s, a: self.open_directory_button())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('open sounds directory', wrap=200)
 
                     dpg.add_spacer(height=0.9)
-                    dpg.add_button(label='start', tag='start_button', width=94, height=53, callback=self.start_button)
+                    dpg.add_button(label='start', tag='start_button', width=94, height=53, 
+                                  callback=lambda s, a: self.start_button())
 
     # callbacks
     def always_on_top(self):
@@ -182,6 +190,7 @@ class KisuGUI:
     def output_device_button(self):
         """cycle through available audio devices"""
         self._enable_all(False)
+        self.listener.stop()
         if not self.available_devices:
             self.refresh_audio_devices()
             if not self.available_devices:
@@ -199,13 +208,18 @@ class KisuGUI:
 
         # reinitialize audio
         self.audio.init_audio()
+        self.listener.start()
         self._enable_all(True)
 
     def reload_button(self):
         """reload audio devices and sounds"""
+        self._enable_all(False)
+        self.listener.stop()
         self.refresh_audio_devices()
         self.audio.init_audio()
         self.audio.load_sounds()
+        self.listener.start()
+        self._enable_all(True)
 
     def open_directory_button(self):
         """open directory based on current platform"""
