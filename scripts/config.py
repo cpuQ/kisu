@@ -52,10 +52,6 @@ class Config:
         self.title = title
         self.version = version
 
-        # status things
-        self.button1_status = None
-        self.button2_status = None
-
         # platform specific
         self.platform = get_platform()
 
@@ -67,6 +63,7 @@ class Config:
         self.font_file = os.path.join(self.res_dir, 'cq-pixel-min.ttf')
         self.small_ico = os.path.join(self.res_dir, 'kisu_small.ico')
         self.large_ico = os.path.join(self.res_dir, 'kisu_large.ico')
+        self.silent_audio = os.path.join(self.res_dir, 'silent.wav')
 
         # config file
         self.config_file = os.path.join(self.script_dir, 'config.ini')
@@ -89,3 +86,23 @@ class Config:
         self.delay = int(config['sounds'].get('delay', 0))
         self.device = int(config['sounds'].get('device', 1))
         self.always_on_top = bool(config['other'].get('always_on_top', True))
+
+    def save(self):
+        """save the configs"""
+        config = configparser.ConfigParser()
+        config['buttons'] = {
+            'button1': self.button1,
+            'button2': self.button2
+        }
+
+        config['sounds'] = {
+            'volume': str(self.volume),
+            'delay': str(self.delay),
+            'device': str(self.device)
+        }
+
+        config['other'] = {
+            'always_on_top': str(self.always_on_top)
+        }
+        with open(self.config_file, 'w') as configfile:
+            config.write(configfile)

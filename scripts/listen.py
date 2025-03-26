@@ -1,87 +1,77 @@
-from pynput import keyboard #, mouse
+from pynput import keyboard
 
-class InputListener:
-    def __init__(self, config, executor):
-        self.executor = executor
-        #self.audio_manager = audio_manager
+class KeyboardListener:
+    def __init__(self, config, executor, audio_manager):
         self.config = config
-        self.active_inputs = set()
-        self.listen_inputs = [
-            self._fix_btn(self.config.button1),
-            self._fix_btn(self.config.button2)
-        ]
+        self.executor = executor
+        self.audio = audio_manager
+        self.running = False
+        self.active_keys = set()
+        self.hotkey_input = None
+        self._set_input_keys()
 
-    # fix the button string to pynput object
-    def _fix_btn(self, button):
+    def _set_input_keys(self):
+        """assign input keys from config to be listened"""
+        self.listen_inputs = {
+            self._fix_key(self.config.button1): 'button1',
+            self._fix_key(self.config.button2): 'button2'
+        }
+
+    def _fix_key(self, key):
+        """convert the key string to pynput object"""
         try:
-            return keyboard.KeyCode.from_char(button)
+            return keyboard.KeyCode.from_char(key)
         except ValueError:
-            if hasattr(keyboard.Key, button):
-                return getattr(keyboard.Key, button)
-            # elif button.lower() in {'mouse1', 'mouse_left'}:
-            #     return mouse.Button.left
-            # elif button.lower() in {'mouse2', 'mouse_right'}:
-            #     return mouse.Button.right
-            # elif button.lower() in {'mouse3', 'mouse_middle'}:
-            #     return mouse.Button.middle
-            # elif button.lower() in {'mouse4', 'mouse_x1'}:
-            #     return mouse.Button.x1
-            # elif button.lower() in {'mouse5', 'mouse_x2'}:
-            #     return mouse.Button.x2
+            if hasattr(keyboard.Key, key):
+                return getattr(keyboard.Key, key)
         return None
 
-    def check(self, state):
-        if any(button in self.active_inputs for button in self.listen_inputs):
-            #self.executor.submit(self.audio_manager.play_sound, state)
-            print(f'{state} sound played')
+    def _get_key_button(self, key):
+        """return assigned button name for a key"""
+        return self.listen_inputs.get(key, None)
 
     def on_press(self, key):
-        if key in self.active_inputs:
+        """submit playsound on key press"""
+        if (key in self.active_keys) or (key not in self.listen_inputs):
             return
-        self.active_inputs.add(key)
-        self.executor.submit(self.check('press'))
+        button = self._get_key_button(key)
+        self.active_keys.add(key)
+        self.executor.submit(self.audio.play_sound, button, 'press')
+        self.gui.set_button_active(button)
 
     def on_release(self, key):
-        self.active_inputs.discard(key)
-        self.executor.submit(self.check('release'))
-
-    # def on_click(self, x, y, button, pressed):
-    #     if pressed:
-    #         state = 'press'
-    #         self.pressed_inputs.add(button)
-    #     else:
-    #         state = 'release'
-    #         self.pressed_inputs.discard(button)
-    #     self.check(state)
+        """submit playsound on key release"""
+        button = self._get_key_button(key)
+        if key in self.active_keys:
+            self.active_keys.discard(key)
+            self.executor.submit(self.audio.play_sound, button, 'release')
+            self.gui.set_button_inactive(button)
 
     def hotkey(self):
-        self.detected_input = None
+        """for selecting hotkeys"""
         def on_press(key):
-            self.detected_input = key
+            self.hotkey_input = key
             return False
-        # def on_click(x, y, button, pressed):
-        #     if pressed:
-        #         self.detected_input = button
-        #         return False
-        with keyboard.Listener(on_press=on_press) as k_listener: #, mouse.Listener(on_click=on_click) as m_listener:
+        with keyboard.Listener(on_press=on_press) as k_listener:
             k_listener.join()
-            #m_listener.join()
 
-        if self.detected_input == keyboard.Key.esc:
+        # esc to cancel
+        if self.hotkey_input == keyboard.Key.esc:
             return False
-
-        self.listen_inputs = [
-            self._fix_btn(self.config.button1),
-            self._fix_btn(self.config.button2)
-        ]
-        return self.detected_input
+        return self.hotkey_input
 
     def start(self):
+        """start the keyboard listener"""
+        # new listener everytime because it cannot be reused
         self.keyboard_listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
-        #self.mouse_listener = mouse.Listener(on_click=self.on_click)
         self.keyboard_listener.start()
-        #self.mouse_listener.start()
+        self.running = True
 
     def stop(self):
+        """stop the keyboard listener"""
         self.keyboard_listener.stop()
-        #self.mouse_listener.stop()
+        self.running = False
+
+    def set_gui(self, gui):
+        """set gui reference to make the buttons reactive"""
+        self.gui = gui
