@@ -1,8 +1,8 @@
+import pygame.mixer as mixer
+import pygame._sdl2.audio as sdl2_audio
 import os
 import time
 import random
-from pygame import mixer
-from pygame._sdl2 import audio as sdl2_audio
 
 class AudioManager:
     def __init__(self, config, executor):
