@@ -84,7 +84,7 @@ class Config:
         self.button2 = str(config['buttons'].get('button2', 'x'))
         self.volume = int(config['sounds'].get('volume', 80))
         self.delay = int(config['sounds'].get('delay', 0))
-        self.device = int(config['sounds'].get('device', 1))
+        self.device = int(config['sounds'].get('device', None))
         self.always_on_top = bool(config['other'].get('always_on_top', True))
 
     def save(self):

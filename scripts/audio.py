@@ -29,7 +29,10 @@ class AudioManager:
         if not devices:
             self.initialized = False
             return
-        if 0 <= self.config.device < len(devices):
+        if not self.config.device:
+            mixer.init()
+            self.initialized = True
+        elif 0 <= self.config.device < len(devices):
             device = devices[self.config.device]
             if self.initialized:
                 mixer.quit()
