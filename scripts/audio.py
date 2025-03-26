@@ -1,7 +1,7 @@
 import pygame.mixer as mixer
+import pygame.time as time
 import pygame._sdl2.audio as sdl2_audio
 import os
-import time
 import random
 
 class AudioManager:
@@ -10,6 +10,7 @@ class AudioManager:
         self.executor = executor
         self.volume = self.config.volume
         self.initialized = False
+        self.active_sounds = []
         self.init_audio()
         self.load_sounds()
 
@@ -39,7 +40,7 @@ class AudioManager:
         """convert the files to pygame sound object"""
         if not self.initialized:
             self.init_audio()
-        path = os.path.join(path,folder)
+        path = os.path.join(path, folder)
         sounds = []
         if os.path.exists(path):
             files = [f for f in os.listdir(path) if f.endswith(('.wav', '.mp3', '.ogg', 'flac'))]
@@ -61,8 +62,21 @@ class AudioManager:
 
     def _add_delay(self, sound):
         """delays sound playback without blocking main thread"""
-        time.sleep(self.config.delay/1000)
-        sound.play()
+        time.wait(self.config.delay)
+        # find available channel
+        channel = mixer.find_channel()
+        if channel:
+            channel.play(sound)
+            self.active_sounds.append(sound)
+
+        # else stop oldest sound and play
+        else:
+            if mixer.get_busy():
+                mixer.Channel(0).stop()
+                channel = mixer.find_channel()
+                if channel:
+                    channel.play(sound)
+                    self.active_sounds.append(sound)
 
     def play_sound(self, button, state):
         """play the sound weee"""
@@ -72,7 +86,6 @@ class AudioManager:
         }
 
         if sounds := action_map[button][state]:
-
             # play only if sound is found in directory
             if sounds:
                 sound = random.choice(sounds)
@@ -88,5 +101,7 @@ class AudioManager:
         self.config.delay = delay
 
     def cleanup(self):
-        """quit mixer"""
+        """stop all sounds and quit mixer"""
+        self.active_sounds.clear()
+        mixer.stop()
         mixer.quit()
