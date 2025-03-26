@@ -177,6 +177,7 @@ cython_debug/
 .trash
 .qodo
 .signing
+build
 main.build
 main.dist
 main.onefile-build
