@@ -1,10 +1,10 @@
 from pynput import keyboard
 
 class KeyboardListener:
-    def __init__(self, config, executor, audio_manager):
+    def __init__(self, config, executor, audio):
         self.config = config
         self.executor = executor
-        self.audio = audio_manager
+        self.audio = audio
         self.running = False
         self.active_keys = set()
         self.hotkey_input = None
