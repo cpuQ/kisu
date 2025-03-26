@@ -69,8 +69,9 @@ class KeyboardListener:
 
     def stop(self):
         """stop the keyboard listener"""
-        self.keyboard_listener.stop()
-        self.running = False
+        if self.running:
+            self.keyboard_listener.stop()
+            self.running = False
 
     def set_gui(self, gui):
         """set gui reference to make the buttons reactive"""
