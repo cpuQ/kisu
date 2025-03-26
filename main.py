@@ -32,7 +32,7 @@ def main():
         gui.setup_gui()
         dpg.create_viewport(
             title=f'{config.title} v{config.version}',
-            min_width=128,
+            min_width=242,
             min_height=136,
             width=242,
             height=136,

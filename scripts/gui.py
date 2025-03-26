@@ -1,7 +1,6 @@
 import dearpygui.dearpygui as dpg
 import os
 import subprocess
-import time
 
 # fuck the ugly nesting idc the gui looks clean af
 class KisuGUI:
@@ -82,7 +81,7 @@ class KisuGUI:
                 dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, self.main_active_col)
 
                 # slider stuff
-                dpg.add_theme_style(dpg.mvStyleVar_GrabRounding, 4)
+                dpg.add_theme_style(dpg.mvStyleVar_GrabRounding, 8)
                 dpg.add_theme_style(dpg.mvStyleVar_GrabMinSize, 4)
                 dpg.add_theme_color(dpg.mvThemeCol_SliderGrab, self.main_thing_col)
                 dpg.add_theme_color(dpg.mvThemeCol_SliderGrabActive, self.main_bg_secondary)
@@ -113,12 +112,12 @@ class KisuGUI:
                 with dpg.group():
                     with dpg.group(horizontal=True):
                         dpg.add_button(label=self.config.button1, width=50, height=20, tag='button1', 
-                                      callback=lambda s, a, u: self.hotkey_button(u), user_data='button1')
+                            callback=lambda s, a, u: self.hotkey_button(u), user_data='button1')
                         dpg.bind_item_theme('button1', '_button_theme')
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('change button1', tag='button1_tooltip', wrap=200)
                         dpg.add_button(label=self.config.button2, width=50, height=20, tag='button2', 
-                                      callback=lambda s, a, u: self.hotkey_button(u), user_data='button2')
+                            callback=lambda s, a, u: self.hotkey_button(u), user_data='button2')
                         dpg.bind_item_theme('button2', '_button_theme')
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('change button2', tag='button2_tooltip', wrap=200)
@@ -145,14 +144,18 @@ class KisuGUI:
                             tracked=True,
                             width=108,
                             height=13,
-                            callback=lambda _, d: self.audio.set_delay(d)
+                            format=f'{self.config.delay}ms',
+                            callback=lambda s, a: [
+                                self.audio.set_delay(a),
+                                dpg.configure_item(s, format=f'{a}ms')
+                            ]
                         )
                         with dpg.tooltip(dpg.last_item()):
-                            dpg.add_text('delay (ms)', wrap=200)
+                            dpg.add_text('delay', wrap=200)
 
                     with dpg.group(horizontal=True, horizontal_spacing=5):
                         dpg.add_checkbox(tag='always_on_top', default_value=True, 
-                                        callback=lambda s, a: self.always_on_top())
+                            callback=lambda: self.always_on_top())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('keep this window on top')
                         dpg.add_text('made by cpuQ', color=self.main_font_col_disabled)
@@ -161,21 +164,21 @@ class KisuGUI:
                 with dpg.group():
                     with dpg.group(horizontal=True, horizontal_spacing=8):
                         dpg.add_button(label=self.config.device, width=26, height=20, tag='output_device_button', 
-                                      callback=lambda s, a: self.output_device_button())
+                            callback=lambda: self.output_device_button())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text(self.available_devices[self.config.device], wrap=220, tag='output_device_button_tooltip')
-                        dpg.add_button(label='/>', tag='reload_button', width=26, height=20, 
-                                      callback=lambda s, a: self.reload_button())
+                        dpg.add_button(label='<>', tag='reload_button', width=26, height=20, 
+                            callback=lambda: self.reload_button())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('rescan audio devices and sounds', wrap=200)
-                        dpg.add_button(label='...', tag='open_directory_button', width=26, height=20, 
-                                      callback=lambda s, a: self.open_directory_button())
+                        dpg.add_button(label='/>', tag='open_directory_button', width=26, height=20, 
+                            callback=lambda: self.open_directory_button())
                         with dpg.tooltip(dpg.last_item()):
                             dpg.add_text('open sounds directory', wrap=200)
 
                     dpg.add_spacer(height=0.9)
                     dpg.add_button(label='start', tag='start_button', width=94, height=53, 
-                                  callback=lambda s, a: self.start_button())
+                        callback=lambda: self.start_button())
 
     # callbacks
     def always_on_top(self):
