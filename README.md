@@ -37,6 +37,8 @@ python main.py
 ```
 
 ## compiled with nuitka
+> [!warning]
+> dpg has issues with nuitka lol https://github.com/hoffstadt/DearPyGui/issues/1867 https://github.com/Nuitka/Nuitka/issues/1534#issuecomment-1354679940
 ```bash
 nuitka --onefile --windows-console-mode=disable --windows-icon-from-ico=res/kisu_large.ico main.py
 ```
