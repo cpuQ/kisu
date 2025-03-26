@@ -1,8 +1,8 @@
-import pygame
-import pygame._sdl2.audio as sdl2_audio
 import os
 import time
 import random
+from pygame import mixer
+from pygame._sdl2 import audio as sdl2_audio
 
 class AudioManager:
     def __init__(self, config, executor):
@@ -16,9 +16,9 @@ class AudioManager:
     def get_devices(self, capture_devices: bool = False):
         """get output devices with sdl2"""
         if not self.initialized:
-            pygame.mixer.init()
+            mixer.init()
             devices = tuple(sdl2_audio.get_audio_device_names(capture_devices))
-            pygame.mixer.quit()
+            mixer.quit()
             return devices
         return tuple(sdl2_audio.get_audio_device_names(capture_devices))
 
@@ -31,8 +31,8 @@ class AudioManager:
         if 0 <= self.config.device < len(devices):
             device = devices[self.config.device]
             if self.initialized:
-                pygame.mixer.quit()
-            pygame.mixer.init(devicename=device)
+                mixer.quit()
+            mixer.init(devicename=device)
             self.initialized = True
 
     def _make_sound_obj(self, path, folder):
@@ -43,7 +43,7 @@ class AudioManager:
         sounds = []
         if os.path.exists(path):
             files = [f for f in os.listdir(path) if f.endswith(('.wav', '.mp3', '.ogg', 'flac'))]
-            sounds.extend(pygame.mixer.Sound(os.path.join(path, f)) for f in files)
+            sounds.extend(mixer.Sound(os.path.join(path, f)) for f in files)
         else:
             os.makedirs(path)
         return sounds
@@ -89,4 +89,4 @@ class AudioManager:
 
     def cleanup(self):
         """quit mixer"""
-        pygame.mixer.quit()
+        mixer.quit()
