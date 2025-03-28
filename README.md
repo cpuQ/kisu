@@ -25,6 +25,7 @@ kisu is a small cross-platform python app that plays a sound when you press/rele
 - [ ] bpm prediction based on taps
 - [ ] play release key if pressed for longer than X ms or X beats
 - [ ] play sounds every 4 taps (useful in streams maybe)
+- [ ] normalize audio volume
 
 *suggest any other feature requests in issues*
 
