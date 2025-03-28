@@ -4,15 +4,7 @@ kisu is a small cross-platform python app that plays a sound when you press/rele
 ![kisu v0 2](https://github.com/user-attachments/assets/8af72c2a-c438-48f7-9ed9-802808b7975d)
 
 ### why?
-_"I HAVE TO TURN MY GAME DOWN TO LIKE 10 BECUASE I CANT FUCKING HEAR MY TAPPING I BECOME SHIT WHEN I CANT HEAR MY TAPPING" - Aspect X_
-
-### todo
-- have a separate settings gui for more configuration options
-- proper audio device dropdown selection
-- bpm prediction based on taps
-- play release key if pressed for longer than X ms or X beats
-- play sounds every 4 taps (useful in streams maybe)
-- *suggest any other features in issues*
+*I HAVE TO TURN MY GAME DOWN TO LIKE 10 BECUASE I CANT FUCKING HEAR MY TAPPING I BECOME SHIT WHEN I CANT HEAR MY TAPPING" - Aspect X*
 
 ---
 ### how to use
@@ -23,9 +15,18 @@ _"I HAVE TO TURN MY GAME DOWN TO LIKE 10 BECUASE I CANT FUCKING HEAR MY TAPPING 
 - add audio files to **button1/release** for button 1 **release** sounds
 - add audio files to **button2/press** for button 2 **press** sounds
 - add audio files to **button2/release** for button 2 **release** sounds
-- _you can put as many audio files as you want... or none!_
+- *you can put as many audio files as you want... or none!*
 3. select audio output
 4. press start button :3
+
+### todo
+- [ ] have a separate settings gui for more configuration options
+- [ ] proper audio device dropdown selection
+- [ ] bpm prediction based on taps
+- [ ] play release key if pressed for longer than X ms or X beats
+- [ ] play sounds every 4 taps (useful in streams maybe)
+
+*suggest any other feature requests in issues*
 
 # manual install
 > [!note]
